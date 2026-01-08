@@ -1,0 +1,138 @@
+torch>=2.2.0  # Recommended: torch==2.8.0+cu129
+torchvision>=0.15.0  # Recommended: torchvision==0.23.0+cu129
+
+# MMDetection3D dependencies (required)
+# Note: mmcv and mmdetection3d are usually installed from source
+# mmcv>=1.4.0  # or mmcv>=2.2.0 (choose according to your mmdet3d version)
+# mmdet>=2.25.0
+# mmdet3d>=1.0.0  # Install from source: pip install -e .
+
+# ONNX export dependencies (required)
+onnx>=1.17.0  # Recommended: onnx==1.19.0
+onnxsim>=0.4.36  # Recommended: onnxsim==0.4.36 (for ONNX model simplification)
+onnxruntime>=1.14.0  # Optional, for ONNX model verification
+
+# Data processing (required)
+numpy>=1.19.0  # Recommended: numpy==2.2.6
+opencv-python>=4.5.0  # Recommended: opencv-python==4.12.0.88
+
+# Additional export dependencies (required)
+tqdm>=4.60.0  # Progress bar
+pyyaml>=5.4.0  # Config file parsing
+
+# ============================================================================
+# Section 2: Inference environment dependencies
+# ============================================================================
+# For running tools/inference_onnx.py and tools/inference_axmodel.py
+# These can be installed independently from the export environment;
+# only inference-related libraries are needed.
+# ============================================================================
+
+# ONNX Runtime inference (for inference_onnx.py)
+onnxruntime>=1.14.0  # Recommended: onnxruntime==1.23.2
+# For GPU support: onnxruntime-gpu>=1.14.0
+
+# AXEngine inference (for inference_axmodel.py)
+# Note: axengine is not on PyPI and must be obtained from the hardware vendor
+# axengine  # install separately as provided by vendor
+
+# Data processing (required)
+numpy>=1.19.0  # Recommended: numpy==2.2.6
+opencv-python>=4.5.0  # Recommended: opencv-python==4.12.0.88
+
+# Utility libraries (required)
+tqdm>=4.60.0  # Progress bar
+
+# ============================================================================
+# Section 3: Common dependencies (required for both environments)
+# ============================================================================
+
+# Base libraries
+numpy>=1.19.0
+opencv-python>=4.5.0
+tqdm>=4.60.0
+pyyaml>=5.4.0
+
+# ============================================================================
+# Environment setup instructions
+# ============================================================================
+#
+# 1. Model export environment (bevformer_pytorch22):
+#    - PyTorch 2.2.0+ is mandatory (PyTorch 1.10.2 will cause ONNX export failure)
+#    - mmcv and mmdetection3d must be installed from source
+#    - CUDA is required for model training/export
+#
+# 2. Inference environment:
+#    - Can be set up independently, only requires onnxruntime or axengine
+#    - PyTorch and mmdetection3d are not needed
+#    - Can run on CPU or GPU
+#
+# 3. PYTHONPATH setup notes:
+#
+#    When exporting the model, set:
+#    export PYTHONPATH=path/to/mmdetection3d:$PYTHONPATH
+#
+#    Reason:
+#    a) The mmdet3d module needs to be imported from the source directory
+#       - Even if mmdetection3d is installed via pip install -e ., it is imported from its source directory
+#       - Source directory: path/to/mmdetection3d
+#       - Without this, Python might not find the mmdet3d module
+#
+#    b) The projects.mmdet3d_plugin module must be imported from the correct path
+#       - Custom plugins are in: bevformer_onnx_export/projects/mmdet3d_plugin/
+#       - Import example: from projects.mmdet3d_plugin.datasets.builder import build_dataloader
+#       - export_onnx.py uses sys.path.append('./'), which adds the current dir to sys.path
+#       - However, mmdet3d inner modules may require access to the 'projects' directory, so PYTHONPATH is required
+#
+#    c) Ensures consistent module import
+#       - Setting PYTHONPATH ensures all required modules can be imported
+#       - Avoids import path conflicts and "module not found" errors
+#
+# 4. Example installation:
+#
+#    Export environment:
+#    ```bash
+#    conda create -n bevformer_pytorch22 python=3.8
+#    conda activate bevformer_pytorch22
+#    pip install torch==2.8.0+cu129 torchvision==0.23.0+cu129 -f https://download.pytorch.org/whl/torch_stable.html
+#    pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.2/index.html
+#    cd /path/to/mmdetection3d
+#    pip install -e .  # install in development mode
+#    pip install onnx==1.19.0 onnxsim==0.4.36 onnxruntime==1.23.2
+#    pip install numpy opencv-python tqdm pyyaml
+#
+#    # Set PYTHONPATH when running export
+#    export PYTHONPATH=/path/to/mmdetection3d:$PYTHONPATH
+#    python tools/export_onnx.py ...
+#    ```
+#
+#    Inference environment (ONNX Runtime):
+#    ```bash
+#    pip install onnxruntime>=1.14.0  # or onnxruntime-gpu
+#    pip install numpy opencv-python tqdm
+#    # PYTHONPATH is not required
+#    ```
+#
+#    Inference environment (AXEngine):
+#    ```bash
+#    # Install axengine (provided by vendor)
+#    pip install numpy opencv-python tqdm
+#    # PYTHONPATH is not required
+#    ```
+#
+# ============================================================================
+# Version compatibility notes
+# ============================================================================
+#
+# Known issues:
+# 1. PyTorch 1.10.2 exports ONNX with model parameters mistakenly as inputs,
+#    causing onnxsim.simplify() to fail with:
+#    "RuntimeError: eraseOutput: Assertion `outputs_[i]->uses().empty()` failed"
+#    Solution: use PyTorch >= 2.2.0
+#
+# 2. mmcv and mmdetection3d versions must match; stick to officially recommended combinations
+#
+# 3. onnxsim 0.4.36 is tested and stable; pin this version when possible
+#
+# ============================================================================
+

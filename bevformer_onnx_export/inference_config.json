@@ -1,0 +1,68 @@
+{
+  "model": {
+    "bev_h": 50,
+    "bev_w": 50,
+    "num_query": 900,
+    "num_classes": 10,
+    "transformer": {
+      "embed_dims": 256,
+      "bev_h": 50,
+      "bev_w": 50
+    },
+    "bbox_coder": {
+      "pc_range": [
+        -51.2,
+        -51.2,
+        -5.0,
+        51.2,
+        51.2,
+        3.0
+      ],
+      "post_center_range": [
+        -61.2,
+        -61.2,
+        -10.0,
+        61.2,
+        61.2,
+        10.0
+      ],
+      "max_num": 300,
+      "num_classes": 10
+    }
+  },
+  "dataset": {
+    "class_names": [
+      "car",
+      "truck",
+      "construction_vehicle",
+      "bus",
+      "trailer",
+      "barrier",
+      "motorcycle",
+      "bicycle",
+      "pedestrian",
+      "traffic_cone"
+    ]
+  },
+  "img_norm": {
+    "mean": [
+      123.675,
+      116.28,
+      103.53
+    ],
+    "std": [
+      58.395,
+      57.12,
+      57.375
+    ],
+    "to_rgb": true
+  },
+  "point_cloud_range": [
+    -51.2,
+    -51.2,
+    -5.0,
+    51.2,
+    51.2,
+    3.0
+  ]
+}

@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0,2 ./tools/dist_test.sh ./projects/configs/bevformer/bevformer_tiny.py ./ckpts/bevformer_tiny_epoch_24.pth 2

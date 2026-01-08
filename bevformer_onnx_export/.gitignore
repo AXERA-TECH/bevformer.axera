@@ -1,0 +1,7 @@
+data/
+__pycache__/
+test/
+output/
+
+*.pth
+*.onnx
