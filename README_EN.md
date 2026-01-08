@@ -207,8 +207,8 @@ data_dir/
 
 Pre-converted AXModel files are available for download at:
 - **Models**: [https://huggingface.co/AXERA-TECH/bevformer](https://huggingface.co/AXERA-TECH/bevformer)
-- **Sample Dataset**: [https://huggingface.co/AXERA-TECH/bevformer](https://huggingface.co/AXERA-TECH/bevformer) (coming soon...)
-_ **Inference Json File**: [https://huggingface.co/AXERA-TECH/bevformer](https://huggingface.co/AXERA-TECH/bevformer)
+- **Sample Dataset**: [https://huggingface.co/AXERA-TECH/bevformer](https://huggingface.co/AXERA-TECH/bevformer) 
+- **Inference Json File**: [https://huggingface.co/AXERA-TECH/bevformer](https://huggingface.co/AXERA-TECH/bevformer)
 
 ### Model Conversion
 
